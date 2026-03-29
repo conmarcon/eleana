@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Eleana Info</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --gold: #D4AF37; }
+        body {
+            margin: 0; padding: 20px; font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto;
+            background: linear-gradient(180deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+            background-attachment: fixed; color: white; display: flex; justify-content: center;
+        }
+        .card {
+            width: 100%; max-width: 360px; background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 25px; padding: 25px; border: 1px solid rgba(255,255,255,0.2);
+            text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        .flags-row { display: flex; justify-content: center; gap: 18px; margin-bottom: 20px; }
+        .flag-btn { font-size: 32px; cursor: pointer; filter: grayscale(0.9); transition: 0.3s; padding: 5px; -webkit-tap-highlight-color: transparent; }
+        .flag-btn.active { filter: grayscale(0); transform: scale(1.15); border-bottom: 2px solid var(--gold); }
+        
+        h1 { color: var(--gold); letter-spacing: 3px; margin: 10px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-size: 2.2rem; }
+        .intro {
+            background: rgba(0,0,0,0.4); padding: 18px; border-radius: 15px;
+            border-left: 5px solid var(--gold); font-style: italic; text-align: left;
+            line-height: 1.6; margin-bottom: 25px; font-size: 0.95rem;
+        }
+        .menu-btn {
+            background: rgba(255,255,255,0.1); width: 100%; border: 1px solid rgba(212, 175, 55, 0.5);
+            padding: 16px; margin-bottom: 12px; border-radius: 15px; color: white;
+            font-weight: bold; font-size: 1rem; cursor: pointer; display: flex;
+            align-items: center; gap: 12px; outline: none; -webkit-tap-highlight-color: transparent;
+        }
+        .menu-btn i { color: var(--gold); pointer-events: none; }
+        .menu-btn span { pointer-events: none; }
+
+        #overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92); z-index: 99999; justify-content: center; align-items: center;
+        }
+        .popup {
+            background: white; color: #222; width: 88%; max-width: 320px;
+            border-radius: 20px; overflow: hidden; position: relative;
+        }
+        .p-head { background: linear-gradient(to right, #1a2a6c, #801313); color: white; padding: 18px; font-weight: bold; }
+        .p-text { padding: 25px; line-height: 1.7; font-size: 1.05rem; }
+        .close-x { position: absolute; top: 10px; right: 15px; color: white; font-size: 35px; cursor: pointer; line-height: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="flags-row">
+            <div class="flag-btn active" data-l="el">🇬🇷</div>
+            <div class="flag-btn" data-l="en">🇬🇧</div>
+            <div class="flag-btn" data-l="fr">🇫🇷</div>
+            <div class="flag-btn" data-l="de">🇩🇪</div>
+        </div>
+
+        <h1 id="n-val">ΕΛΕΑΝΑ</h1>
+        <div id="i-val" class="intro">"Ελεάνα: Η φωτεινή χάρη. Ένας αρμονικός συνδυασμός του φωτός και της ευλογίας, που συμβολίζει την εσωτερική λάμψη και την ευγένεια της ψυχής."</div>
+
+        <button class="menu-btn" data-i="0"><i class="fas fa-scroll"></i> <span id="b0">Ετυμολογία & Σημασία</span></button>
+        <button class="menu-btn" data-i="1"><i class="fas fa-star"></i> <span id="b1">Σύμβολο Αρμονίας</span></button>
+        <button class="menu-btn" data-i="2"><i class="fas fa-cross"></i> <span id="b2">Θρησκευτική Ρίζα</span></button>
+        <button class="menu-btn" data-i="3"><i class="fas fa-sparkles"></i> <span id="b3">Προσωπικότητα</span></button>
+    </div>
+
+    <div id="overlay">
+        <div class="popup">
+            <div class="close-x">&times;</div>
+            <div id="p-t" class="p-head"></div>
+            <div id="p-d" class="p-text"></div>
+        </div>
+    </div>
+
+    <script>
+        const repo = {
+            el: { n: "ΕΛΕΑΝΑ", i: '"Ελεάνα: Η φωτεινή χάρη. Ένας αρμονικός συνδυασμός του φωτός και της ευλογίας, που συμβολίζει την εσωτερική λάμψη και την ευγένεια της ψυχής."', b: ["Ετυμολογία & Σημασία", "Σύμβολο Αρμονίας", "Θρησκευτική Ρίζα", "Προσωπικότητα"], d: ["Το όνομα είναι σύνθετο, από το Ελένη (λαμπρή, φωτεινή) και το Άννα (εύνοια, χάρη). Σημαίνει την κεχαριτωμένη και φωτεινή ύπαρξη.", "Συμβολίζει την ισορροπία ανάμεσα στην εξωτερική λάμψη και την εσωτερική γαλήνη. Είναι ένα όνομα που αποπνέει φινέτσα και ζεστασιά.", "Φέρει την πνευματική κληρονομιά της Αγίας Ελένης και της Αγίας Άννας, συνδυάζοντας την επιμονή για την αλήθεια με τη μητρική προστασία.", "Μια Ελεάνα διακρίνεται για την ενσυναίσθησή της, τη δημιουργικότητα και την ικανότητά της να φέρνει φως στις ζωές των άλλων με την ευγένειά της."] },
+            en: { n: "ELEANA", i: '"Eleana: The luminous grace. A harmonic blend of light and blessing, symbolizing inner brilliance and nobility of soul."', b: ["Etymology & Meaning", "Symbol of Harmony", "Religious Roots", "Personality"], d: ["A compound name from Helen (shining, bright) and Anna (grace, favor). It signifies a graceful and radiant being.", "It symbolizes the balance between outer brilliance and inner peace. A name that exudes elegance and warmth.", "It carries the spiritual heritage of Saint Helen and Saint Anne, combining the quest for truth with maternal protection.", "An Eleana is known for her empathy, creativity, and her ability to brighten others' lives with her kindness."] },
+            fr: { n: "ELEANA", i: '"Eleana : la grâce lumineuse. Un mélange harmonieux de lumière et de bénédiction, symbolisant l\'éclat intérieur."', b: ["Étymologie", "Symbole d'Harmonie", "Racines Religieuses", "Personnalité"], d: ["Nom composé d'Hélène (éclatante, lumineuse) et d'Anna (grâce, faveur). Signifie l'être gracieux και radieux.", "Symbolise l'équilibre entre l'éclat extérieur et la sérénité intérieure. Un nom qui dégage finesse και chaleur.", "Porte l'héritage spirituel de Sainte Hélène et Sainte Anne, alliant la quête de vérité à la protection maternelle.", "Eleana se distingue par son empathie, sa créativité και sa capacité à éclairer la vie des autres par sa gentillesse."] },
+            de: { n: "ELEANA", i: '"Eleana: Die leuchtende Gnade. Eine harmonische Mischung aus Licht und Segen, die inneren Glanz und Seelenadel symbolisiert."', b: ["Etymologie", "Symbol der Harmonie", "Tradition", "Persönlichkeit"], d: ["Ein zusammengesetzter Name aus Helena (die Strahlende) und Anna (Gnade, Gunst). Er bedeutet das anmutige, lichtvolle Wesen.", "Er symbolisiert das Gleichgewicht zwischen äußerem Glanz und innerem Frieden. Ein Name, der Eleganz und Wärme ausstrahlt.", "Verbindet das geistige Erbe der heiligen Helena und der heiligen Anna – die Suche nach Wahrheit mit mütterlicher Fürsorge.", "Eine Eleana zeichnet sich durch Mitgefühl, Kreativität und die Fähigkeit aus, das Leben anderer durch ihre Güte zu erhellen."] }
+        };
+
+        let activeL = 'el';
+        const view = document.getElementById('overlay');
+
+        document.addEventListener('click', (e) => {
+            const f = e.target.closest('.flag-btn');
+            const m = e.target.closest('.menu-btn');
+            const c = e.target.closest('.close-x') || e.target === view;
+
+            if (f) {
+                activeL = f.dataset.l;
+                document.querySelectorAll('.flag-btn').forEach(el => el.classList.remove('active'));
+                f.classList.add('active');
+                document.getElementById('n-val').innerText = repo[activeL].n;
+                document.getElementById('i-val').innerText = repo[activeL].i;
+                for(let k=0; k<4; k++) document.getElementById('b'+k).innerText = repo[activeL].b[k];
+            }
+            if (m) {
+                const idx = m.dataset.i;
+                document.getElementById('p-t').innerText = repo[activeL].b[idx];
+                document.getElementById('p-d').innerText = repo[activeL].d[idx];
+                view.style.display = 'flex';
+            }
+            if (c) view.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
